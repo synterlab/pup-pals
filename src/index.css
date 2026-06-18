@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-cream: #FFF8F0;
+  --color-coral: #FF8B6A;
+  --color-sage: #8FBC8F;
+  --color-honey: #FFD166;
+  --color-bark: #3D2E1E;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #FFF8F0;
+  font-family: 'Nunito', sans-serif;
+  color: #3D2E1E;
+}
+
+body {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.font-display {
+  font-family: 'Fredoka One', cursive;
+}
+
+.stat-bar {
+  height: 10px;
+  border-radius: 9999px;
+  background: rgba(61, 46, 30, 0.12);
+  overflow: hidden;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.5s ease;
+}
+
+.action-btn {
+  @apply flex flex-col items-center justify-center gap-1 p-3 rounded-3xl font-body font-700 text-xs transition-all duration-150 active:scale-90;
+  min-width: 60px;
+  min-height: 60px;
+  touch-action: manipulation;
+}
+
+.panel {
+  @apply bg-parchment rounded-4xl shadow-xl border border-blush;
+}
+
+.btn-primary {
+  @apply bg-coral text-white font-display text-lg px-8 py-3 rounded-4xl shadow-lg active:scale-95 transition-all duration-150;
+  box-shadow: 0 4px 0 #E8664A;
+}
+
+.btn-primary:active {
+  box-shadow: 0 2px 0 #E8664A;
+  transform: translateY(2px) scale(0.97);
+}
+
+.btn-secondary {
+  @apply bg-sage text-white font-display text-lg px-8 py-3 rounded-4xl shadow-lg active:scale-95 transition-all duration-150;
+  box-shadow: 0 4px 0 #6A9C6A;
+}
+
+.paw-loader {
+  animation: pawBounce 0.8s ease-in-out infinite;
+}
+
+@keyframes pawBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes heartFloat {
+  0% { transform: translateY(0) scale(0); opacity: 1; }
+  100% { transform: translateY(-80px) scale(1.5); opacity: 0; }
+}
+
+@keyframes coinFly {
+  0% { transform: translateY(0) scale(0.5); opacity: 1; }
+  100% { transform: translateY(-60px) translateX(20px) scale(1); opacity: 0; }
+}
+
+@keyframes toastSlide {
+  0% { transform: translateY(100px); opacity: 0; }
+  15% { transform: translateY(0); opacity: 1; }
+  85% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(100px); opacity: 0; }
+}
+
+.heart-particle {
+  position: absolute;
+  animation: heartFloat 1.2s ease-out forwards;
+  font-size: 24px;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.toast-slide {
+  animation: toastSlide 3s ease forwards;
+}
+
+.ring-pulse {
+  animation: ringPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
