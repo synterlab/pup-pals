@@ -22,7 +22,7 @@ export function clearStoredUser() {
 }
 
 export default function LoginScreen() {
-  const setScreen = useGameStore(s => s.setScreen)
+  const setScreenFn = useGameStore(s => s.setScreen)
   const setUsername = useGameStore(s => s.setUsername)
 
   const existingUser = getStoredUser()
@@ -41,7 +41,7 @@ export default function LoginScreen() {
     if (mode === 'register') {
       storeUser(trimmed, password)
       setUsername(trimmed)
-      setScreen('start')
+      setScreenFn('start')
     } else {
       const stored = getStoredUser()
       if (!stored) { setError('No account found. Register first.'); return }
@@ -50,13 +50,13 @@ export default function LoginScreen() {
         return
       }
       setUsername(stored.username)
-      setScreen('start')
+      setScreenFn('start')
     }
   }
 
   const handleGuestLogin = () => {
     setUsername('Guest')
-    setScreen('start')
+    setScreenFn('start')
   }
 
   return (
@@ -181,6 +181,49 @@ export default function LoginScreen() {
         <p className="font-body text-xs text-bark-light text-center mt-2 opacity-40">
           Guest progress won't be saved between sessions.
         </p>
+
+        {/* Footer: EasyA Kickstart + X Account */}
+        <div className="mt-6 flex flex-col items-center gap-2">
+          <div className="flex items-center gap-2">
+            <div className="h-px flex-1 bg-blush opacity-60" />
+            <span className="font-body text-xs text-bark-light opacity-40">Built with</span>
+            <div className="h-px flex-1 bg-blush opacity-60" />
+          </div>
+          <div className="flex items-center gap-3">
+            <a
+              href="https://easya.io"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 opacity-70 hover:opacity-100 transition-opacity"
+              title="EasyA Kickstart"
+            >
+              <img
+                src="/easya-logo.png"
+                alt="EasyA Kickstart"
+                className="h-6 w-auto object-contain"
+                draggable={false}
+              />
+              <span className="font-body text-xs text-bark-light">EasyA Kickstart</span>
+            </a>
+            <div className="w-px h-4 bg-blush opacity-60" />
+            <a
+              href="https://x.com/Greeky22"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 opacity-70 hover:opacity-100 transition-opacity"
+              title="@Greeky22 on X"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="w-3.5 h-3.5 fill-current text-bark-light"
+                aria-hidden="true"
+              >
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              <span className="font-body text-xs text-bark-light">@Greeky22</span>
+            </a>
+          </div>
+        </div>
       </motion.div>
     </div>
   )
