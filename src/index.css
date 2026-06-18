@@ -48,7 +48,7 @@ body {
 }
 
 .action-btn {
-  @apply flex flex-col items-center justify-center gap-1 p-3 rounded-3xl font-body font-700 text-xs transition-all duration-150 active:scale-90;
+  @apply flex flex-col items-center justify-center gap-1 p-3 rounded-3xl font-body font-bold text-xs transition-all duration-150 active:scale-90;
   min-width: 60px;
   min-height: 60px;
   touch-action: manipulation;
