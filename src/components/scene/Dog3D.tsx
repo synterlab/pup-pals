@@ -64,8 +64,7 @@ function DogMesh() {
     <meshLambertMaterial color={color} />
   )
 
-  const handlePointerDown = (e: THREE.Event) => {
-    e.stopPropagation?.()
+  const handlePointerDown = () => {
     petDog()
   }
 

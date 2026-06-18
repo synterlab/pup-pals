@@ -10,8 +10,10 @@ export interface SaveData {
   xp: number
   xpToNext: number
   currency: number
-  food: unknown[]
-  tricks: unknown[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  food: any[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  tricks: any[]
   tutorialComplete: boolean
   tutorialStep: number
   lastSeen: number
