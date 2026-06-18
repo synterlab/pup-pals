@@ -54,6 +54,11 @@ export default function LoginScreen() {
     }
   }
 
+  const handleGuestLogin = () => {
+    setUsername('Guest')
+    setScreen('start')
+  }
+
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center bg-cream overflow-hidden px-6">
       {[...Array(6)].map((_, i) => (
@@ -144,6 +149,20 @@ export default function LoginScreen() {
             >
               {mode === 'register' ? 'Create Account' : 'Sign In'}
             </motion.button>
+
+            <div className="flex items-center gap-2 my-1">
+              <div className="flex-1 h-px bg-blush" />
+              <span className="font-body text-xs text-bark-light">or</span>
+              <div className="flex-1 h-px bg-blush" />
+            </div>
+
+            <motion.button
+              className="w-full py-2 rounded-2xl border-2 border-blush bg-white/60 font-display text-sm text-bark-light hover:border-coral hover:text-coral transition-all"
+              whileTap={{ scale: 0.96 }}
+              onClick={handleGuestLogin}
+            >
+              🐾 Continue as Guest
+            </motion.button>
           </div>
         </div>
 
@@ -157,6 +176,10 @@ export default function LoginScreen() {
           >
             {mode === 'register' ? 'Sign in' : 'Register'}
           </button>
+        </p>
+
+        <p className="font-body text-xs text-bark-light text-center mt-2 opacity-40">
+          Guest progress won't be saved between sessions.
         </p>
       </motion.div>
     </div>
