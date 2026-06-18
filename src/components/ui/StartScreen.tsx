@@ -36,6 +36,43 @@ import { motion } from 'framer-motion'
           </motion.div>
         ))}
 
+        {/* EasyA + X badge — top of screen */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="absolute top-4 flex items-center gap-2 bg-white/70 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm"
+        >
+          <a
+            href="https://easya.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity"
+            title="EasyA Kickstart"
+          >
+            <img
+              src="/easya-logo.png"
+              alt="EasyA Kickstart"
+              className="h-4 w-auto object-contain"
+              draggable={false}
+            />
+            <span className="font-body text-xs text-bark-light font-semibold">EasyA Kickstart</span>
+          </a>
+          <div className="w-px h-3 bg-blush" />
+          <a
+            href="https://x.com/Greeky22"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 opacity-80 hover:opacity-100 transition-opacity"
+            title="@Greeky22 on X"
+          >
+            <svg viewBox="0 0 24 24" className="w-3 h-3 fill-current text-bark-light" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+            <span className="font-body text-xs text-bark-light">@Greeky22</span>
+          </a>
+        </motion.div>
+
         <motion.div
           initial={{ scale: 0, rotate: -10 }}
           animate={{ scale: 1, rotate: 0 }}
@@ -116,49 +153,10 @@ import { motion } from 'framer-motion'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="font-body text-xs text-bark-light opacity-50 mt-4"
+          className="absolute bottom-6 font-body text-xs text-bark-light opacity-50"
         >
           Tap your dog to play!
         </motion.p>
-
-        {/* Footer: EasyA Kickstart + X Account */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="absolute bottom-5 flex flex-col items-center gap-1.5"
-        >
-          <div className="flex items-center gap-3">
-            <a
-              href="https://easya.io"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity"
-              title="EasyA Kickstart"
-            >
-              <img
-                src="/easya-logo.png"
-                alt="EasyA Kickstart"
-                className="h-5 w-auto object-contain"
-                draggable={false}
-              />
-              <span className="font-body text-xs text-bark-light">EasyA Kickstart</span>
-            </a>
-            <div className="w-px h-3.5 bg-blush opacity-60" />
-            <a
-              href="https://x.com/Greeky22"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity"
-              title="@Greeky22 on X"
-            >
-              <svg viewBox="0 0 24 24" className="w-3 h-3 fill-current text-bark-light" aria-hidden="true">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
-              <span className="font-body text-xs text-bark-light">@Greeky22</span>
-            </a>
-          </div>
-        </motion.div>
       </div>
     )
   }
