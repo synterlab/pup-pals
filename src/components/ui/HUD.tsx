@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '../../game/store/useGameStore'
+import { clearStoredUser } from './LoginScreen'
 
-function StatBar({ value, color, icon, label }: { value: number; color: string; icon: string; label: string }) {
+function StatBar({ value, color, icon }: { value: number; color: string; icon: string }) {
   const pct = Math.max(0, Math.min(100, value))
   const isLow = pct < 25
   return (
@@ -18,7 +19,7 @@ function StatBar({ value, color, icon, label }: { value: number; color: string; 
           />
         </div>
       </div>
-      <span className="font-body font-700 text-xs text-bark w-6 text-right">{Math.round(pct)}</span>
+      <span className="font-body font-bold text-xs text-bark w-6 text-right">{Math.round(pct)}</span>
     </div>
   )
 }
@@ -37,7 +38,7 @@ function FeedPanel({ onClose }: { onClose: () => void }) {
     >
       <div className="flex justify-between items-center mb-3">
         <h3 className="font-display text-bark text-lg">Feed Buddy</h3>
-        <button onClick={onClose} className="text-bark-light text-xl leading-none">✕</button>
+        <button onClick={onClose} className="text-bark-light text-xl leading-none">x</button>
       </div>
       {hunger >= 95 && (
         <p className="font-body text-xs text-sage text-center mb-2">Buddy is full! 😊</p>
@@ -57,8 +58,8 @@ function FeedPanel({ onClose }: { onClose: () => void }) {
           >
             <span className="text-2xl">{item.emoji}</span>
             <div className="text-left">
-              <div className="font-body font-700 text-xs text-bark">{item.name}</div>
-              <div className="font-body text-xs text-bark-light">×{item.owned}</div>
+              <div className="font-body font-bold text-xs text-bark">{item.name}</div>
+              <div className="font-body text-xs text-bark-light">x{item.owned}</div>
             </div>
           </motion.button>
         ))}
@@ -84,11 +85,17 @@ export default function HUD() {
   const toggleMute = useGameStore(s => s.toggleMute)
   const particles = useGameStore(s => s.particles)
   const toast = useGameStore(s => s.toast)
+  const username = useGameStore(s => s.username)
 
   const [showFeed, setShowFeed] = useState(false)
 
   const canTrain = energy >= 20
   const canPlay = energy >= 10
+
+  const handleLogout = () => {
+    clearStoredUser()
+    setScreen('login')
+  }
 
   return (
     <div className="fixed inset-0 pointer-events-none flex flex-col">
@@ -111,7 +118,7 @@ export default function HUD() {
             initial={{ y: -60, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -60, opacity: 0 }}
-            className="absolute top-4 left-1/2 -translate-x-1/2 bg-bark text-white px-4 py-2 rounded-2xl font-body font-700 text-sm flex items-center gap-2 shadow-lg z-50"
+            className="absolute top-4 left-1/2 -translate-x-1/2 bg-bark text-white px-4 py-2 rounded-2xl font-body font-bold text-sm flex items-center gap-2 shadow-lg z-50"
           >
             <span>{toast.emoji}</span>
             <span>{toast.message}</span>
@@ -122,11 +129,11 @@ export default function HUD() {
       {/* Top HUD */}
       <div className="pointer-events-auto px-3 pt-3">
         <div className="panel p-3">
-          {/* Currency + Level + Mute */}
+          {/* Username + logout row */}
           <div className="flex justify-between items-center mb-2">
-            <div className="flex items-center gap-1">
-              <span className="text-base">🍪</span>
-              <span className="font-display text-bark text-base">{currency}</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-sm">👤</span>
+              <span className="font-body font-bold text-xs text-bark">{username || 'Guest'}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="font-body text-xs text-bark-light">Lv.{level}</span>
@@ -137,17 +144,29 @@ export default function HUD() {
                 />
               </div>
             </div>
-            <button onClick={toggleMute} className="text-lg">
-              {audioMuted ? '🔇' : '🔊'}
-            </button>
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
+                <span className="text-sm">🍪</span>
+                <span className="font-display text-bark text-sm">{currency}</span>
+              </div>
+              <button onClick={toggleMute} className="text-base">
+                {audioMuted ? '🔇' : '🔊'}
+              </button>
+              <button
+                onClick={handleLogout}
+                className="text-xs font-body text-bark-light bg-blush px-2 py-0.5 rounded-full"
+              >
+                Sign out
+              </button>
+            </div>
           </div>
 
           {/* Stat bars */}
           <div className="space-y-1.5">
-            <StatBar value={hunger} color="#FF8B6A" icon="🦴" label="Hunger" />
-            <StatBar value={cleanliness} color="#87CEEB" icon="💧" label="Clean" />
-            <StatBar value={energy} color="#FFD166" icon="⚡" label="Energy" />
-            <StatBar value={happiness} color="#FF9FBF" icon="❤️" label="Happy" />
+            <StatBar value={hunger} color="#FF8B6A" icon="🦴" />
+            <StatBar value={cleanliness} color="#87CEEB" icon="💧" />
+            <StatBar value={energy} color="#FFD166" icon="⚡" />
+            <StatBar value={happiness} color="#FF9FBF" icon="❤️" />
           </div>
         </div>
       </div>
@@ -164,58 +183,52 @@ export default function HUD() {
 
           <div className="panel p-3">
             <div className="grid grid-cols-5 gap-2">
-              {/* Feed */}
               <motion.button
                 className="action-btn bg-coral/15 text-coral"
                 whileTap={{ scale: 0.88 }}
                 onClick={() => setShowFeed(!showFeed)}
               >
                 <span className="text-2xl">🦴</span>
-                <span className="font-body font-700 text-bark-light text-xs">Feed</span>
+                <span className="font-body font-bold text-bark-light text-xs">Feed</span>
               </motion.button>
 
-              {/* Bathe */}
               <motion.button
                 className="action-btn bg-sky-100 text-sky-500"
                 whileTap={{ scale: 0.88 }}
                 onClick={() => { batheDog(); setShowFeed(false) }}
               >
                 <span className="text-2xl">🛁</span>
-                <span className="font-body font-700 text-bark-light text-xs">Bath</span>
+                <span className="font-body font-bold text-bark-light text-xs">Bath</span>
               </motion.button>
 
-              {/* Pet/Play */}
               <motion.button
                 className={`action-btn ${canPlay ? 'bg-pink-100 text-pink-500' : 'bg-gray-100 text-gray-400'}`}
                 whileTap={canPlay ? { scale: 0.88 } : {}}
                 onClick={() => { if (canPlay) { petDog(200, 300); setShowFeed(false) } }}
               >
                 <span className="text-2xl">{canPlay ? '🤗' : '😴'}</span>
-                <span className="font-body font-700 text-bark-light text-xs">Pet</span>
+                <span className="font-body font-bold text-bark-light text-xs">Pet</span>
               </motion.button>
 
-              {/* Train */}
               <motion.button
                 className={`action-btn ${canTrain ? 'bg-honey/25 text-amber-600' : 'bg-gray-100 text-gray-400'}`}
                 whileTap={canTrain ? { scale: 0.88 } : {}}
                 onClick={() => { if (canTrain) { setScreen('minigame'); setShowFeed(false) } }}
               >
                 <span className="text-2xl">{canTrain ? '🎯' : '⚡'}</span>
-                <span className="font-body font-700 text-bark-light text-xs">Train</span>
+                <span className="font-body font-bold text-bark-light text-xs">Train</span>
               </motion.button>
 
-              {/* Sleep / Shop toggle */}
               <motion.button
                 className="action-btn bg-sage/20 text-sage-dark"
                 whileTap={{ scale: 0.88 }}
                 onClick={() => { sleepDog(); setShowFeed(false) }}
               >
                 <span className="text-2xl">💤</span>
-                <span className="font-body font-700 text-bark-light text-xs">Sleep</span>
+                <span className="font-body font-bold text-bark-light text-xs">Sleep</span>
               </motion.button>
             </div>
 
-            {/* Shop button */}
             <motion.button
               className="mt-2 w-full bg-honey/30 text-amber-700 rounded-2xl py-2 font-display text-base flex items-center justify-center gap-2"
               whileTap={{ scale: 0.97 }}

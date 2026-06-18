@@ -5,20 +5,20 @@ const STEPS = [
   {
     emoji: '🐶',
     title: 'Meet Buddy!',
-    body: 'Your new virtual pup is here! Buddy needs your care, love, and attention.',
+    body: 'Your new virtual dog is here! Buddy needs your care, love, and attention.',
     cta: 'Say hi!',
     action: 'pet',
   },
   {
     emoji: '🦴',
-    title: "Buddy's hungry!",
-    body: 'Tap the bone icon to open the food menu and feed your pup.',
+    title: 'Buddy is hungry!',
+    body: 'Tap the bone icon to open the food menu and feed your dog.',
     cta: 'Feed Buddy',
     action: 'feed',
   },
   {
     emoji: '🎯',
-    title: "Let's train!",
+    title: 'Time to train!',
     body: 'Use the Train button to play a timing mini-game and teach Buddy new tricks!',
     cta: 'Got it!',
     action: 'train',
@@ -27,7 +27,7 @@ const STEPS = [
     emoji: '🏪',
     title: 'Visit the Shop!',
     body: 'Earn treats by training, then spend them on better food and toys in the shop.',
-    cta: "Let's go!",
+    cta: 'Lets go!',
     action: 'shop',
   },
 ]
@@ -55,7 +55,6 @@ export default function Tutorial() {
 
   return (
     <div className="fixed inset-0 bg-cream flex flex-col items-center justify-center p-6">
-      {/* Progress dots */}
       <div className="flex gap-2 mb-8">
         {STEPS.map((_, i) => (
           <div
@@ -91,7 +90,7 @@ export default function Tutorial() {
             whileTap={{ scale: 0.95 }}
             onClick={handleCta}
           >
-            {isLastStep ? '🎉 Start Playing!' : `${step.cta} →`}
+            {isLastStep ? 'Start Playing!' : `${step.cta}`}
           </motion.button>
 
           {tutorialStep === 0 && (
@@ -105,7 +104,6 @@ export default function Tutorial() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Floating paws */}
       {[...Array(4)].map((_, i) => (
         <motion.div
           key={i}

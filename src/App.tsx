@@ -4,6 +4,7 @@ import { OrbitControls } from '@react-three/drei'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useGameStore } from './game/store/useGameStore'
 import { useStatDecay } from './game/systems/statDecay'
+import LoginScreen from './components/ui/LoginScreen'
 import StartScreen from './components/ui/StartScreen'
 import HUD from './components/ui/HUD'
 import Shop from './components/ui/Shop'
@@ -81,6 +82,12 @@ export default function App() {
   return (
     <div className="fixed inset-0 overflow-hidden select-none" style={{ fontFamily: 'Nunito, sans-serif' }}>
       <AnimatePresence mode="wait">
+        {screen === 'login' && (
+          <motion.div key="login" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <LoginScreen />
+          </motion.div>
+        )}
+
         {screen === 'start' && (
           <motion.div key="start" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <StartScreen />

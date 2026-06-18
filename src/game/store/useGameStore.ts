@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { loadSave, writeSave, SaveData } from '../systems/saveSystem'
 
-export type Screen = 'start' | 'game' | 'shop' | 'tutorial' | 'minigame'
+export type Screen = 'login' | 'start' | 'game' | 'shop' | 'tutorial' | 'minigame'
 export type DogAnimation = 'idle' | 'happy' | 'eat' | 'sleep' | 'sit' | 'sad'
 
 export interface FoodItem {
@@ -35,7 +35,7 @@ const DEFAULT_FOOD: FoodItem[] = [
   { id: 'kibble', name: 'Kibble', emoji: '🦴', hungerRestore: 25, happinessRestore: 5, cost: 0, owned: 10 },
   { id: 'treat', name: 'Treat', emoji: '🍖', hungerRestore: 15, happinessRestore: 20, cost: 5, owned: 3 },
   { id: 'steak', name: 'Prime Steak', emoji: '🥩', hungerRestore: 50, happinessRestore: 30, cost: 20, owned: 0 },
-  { id: 'cake', name: 'Pup Cake', emoji: '🎂', hungerRestore: 40, happinessRestore: 50, cost: 40, owned: 0 },
+  { id: 'cake', name: 'Doggy Cake', emoji: '🎂', hungerRestore: 40, happinessRestore: 50, cost: 40, owned: 0 },
 ]
 
 const DEFAULT_TRICKS: Trick[] = [
@@ -47,6 +47,7 @@ const DEFAULT_TRICKS: Trick[] = [
 
 interface GameState {
   screen: Screen
+  username: string
   dogName: string
   hunger: number
   cleanliness: number
@@ -73,6 +74,7 @@ interface GameState {
 interface GameActions {
   initGame: () => void
   setScreen: (screen: Screen) => void
+  setUsername: (name: string) => void
   setAnimation: (anim: DogAnimation) => void
   feedDog: (foodId: string) => void
   batheDog: () => void
@@ -110,7 +112,8 @@ function applyOfflineDecay(save: SaveData): Partial<GameState> {
 }
 
 export const useGameStore = create<Store>((set, get) => ({
-  screen: 'start',
+  screen: 'login',
+  username: '',
   dogName: 'Buddy',
   hunger: 80,
   cleanliness: 90,
@@ -153,6 +156,12 @@ export const useGameStore = create<Store>((set, get) => ({
     } else {
       set({ initialized: true })
     }
+    const storedUser = (() => {
+      try { const r = localStorage.getItem('nintendogs_user'); return r ? JSON.parse(r) : null } catch { return null }
+    })()
+    if (storedUser?.username) {
+      set(s => ({ username: storedUser.username, screen: s.screen === 'login' ? 'start' : s.screen }))
+    }
   },
 
   setScreen: (screen) => {
@@ -160,6 +169,8 @@ export const useGameStore = create<Store>((set, get) => ({
     const state = get()
     writeSave(state)
   },
+
+  setUsername: (name) => set({ username: name }),
 
   setAnimation: (anim) => set({ currentAnimation: anim }),
 

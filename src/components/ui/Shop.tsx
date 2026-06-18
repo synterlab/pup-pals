@@ -81,7 +81,7 @@ export default function Shop() {
         {/* Tricks section */}
         <div className="panel p-4">
           <h2 className="font-display text-bark text-xl mb-3">🎓 Tricks</h2>
-          <p className="font-body text-bark-light text-xs mb-3">Train your pup to learn new tricks!</p>
+          <p className="font-body text-bark-light text-xs mb-3">Train your dog to learn new tricks!</p>
           <div className="grid grid-cols-2 gap-2">
             {tricks.map(trick => {
               const unlocked = level >= trick.unlockLevel
